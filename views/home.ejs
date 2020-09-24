@@ -1,0 +1,128 @@
+<%- include('./head.ejs') %>
+  <%- include('./navigation.ejs') %>
+
+
+
+<style>
+  body {
+  background-color: lightblue;
+}
+.pagination {
+  margin: 60px 25px 25px 100px;
+    height: 3.5rem;
+  text-align: center;
+  background-color: #a8aa41;
+}
+/* .grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: stretch;
+ 
+  
+
+} */
+.pagination a {
+  text-decoration: none;
+  color: #78077c;
+  padding: 0.5rem;
+  border: 1px solid #78077c;
+  margin: 0 0.5rem;
+  background-color: #a8aa41;
+
+}
+
+.pagination a:hover,
+.pagination a:active {
+  background: #48aae4;
+  color: white;
+}
+  h1 {
+    text-align: center;
+}
+.card__image{
+  text-align: center;
+
+}
+img {
+  border: 4px solid rgb(207, 104, 104);
+  border-radius: 2px;
+  padding: 5px;
+  width: 10px;
+  margin-left: auto;
+  margin-right: auto;
+ 
+  max-width: 60%;
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+  
+
+</style>
+<body>
+<h1>מקומות לדייטים</h1>
+  <% if (places.length > 0) { %>
+    <div class="grid">
+      <% for (let place of places) { %>
+        <article class="card product-item">
+          <header class="card__header">
+              <h1 class="product__title">
+                <%= place.title %>              </h1>
+          </header>
+       
+        <!-- <p>
+          <%= place.title %>
+      <p> -->
+
+      <!-- </div> -->
+      <!-- <div class="card__image"> -->
+        <a href="/place/<%= place._id %>"><img src="/<%= place.image %>" alt="<%= place.title %>" class="center">
+        </a>
+  </div>
+    <div class="card__actions">
+      <% if(isAuth){ %>        
+      <form action="/delete-place" method="POST">
+                <input type="hidden" value="<%= place._id %>" name="placeId">
+              <button  class="btn" type="submit">מחק מהאתר</button></form>
+              <% } %>
+              <form action="/place/<%= place._id %>"> <input type="hidden" value="<%= place._id %>" name="placeId">
+              <button  class="btn" type="submit">פרטים נוספים</button></form>
+              
+              <% } %>
+              
+    </div>
+    <article>
+  </header>
+</body>             
+<section class="pagination">
+  <% if (hasPreviousPage) { %>
+    <a href="?page=<%= previousPage %>">Previous</a>
+<% } %>
+  <% if (currentPage !== 1 && previousPage !== 1) { %>
+      <a href="?page=1">1</a>
+  <% } %>
+  <% if (hasPreviousPage) { %>
+      <a href="?page=<%= previousPage %>"><%= previousPage %></a>
+  <% } %>
+  <a href="?page=<%= currentPage %>" class="active"><%= currentPage %></a>
+  <% if (hasNextPage) { %>
+      <a href="?page=<%= nextPage %>"><%= nextPage %></a>
+  <% } %>
+  <% if (lastPage !== currentPage && nextPage !== lastPage) { %>
+      <a href="?page=<%= lastPage %>"><%= lastPage %> </a>
+  <% } %>
+  <% if (hasNextPage) { %>
+    <a href="?page=<%= nextPage %>">Next</a>
+<% } %>
+</section>
+
+
+<%} else { %>
+<h1>No places now</h1>
+<% } %>
+<%- include('./end.ejs') %>

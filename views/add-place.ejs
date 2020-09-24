@@ -1,0 +1,131 @@
+<%- include('./head.ejs') %>
+  <%- include('./navigation.ejs') %>
+ <!-- //<link rel="stylesheet" href="/css/forms.css"> -->
+
+ <style>
+    body {
+  background-color: lightblue;
+}
+      .form-control {
+  margin: 1rem 0;
+}
+
+.form-control label,
+.form-control input,
+.form-control textarea {
+  display: block;
+  width: 100%;
+  
+  margin-bottom: 1rem;
+}
+input {
+        resize: horizontal;
+        width: 200px;
+    }
+
+    input:active {
+        width: auto;   
+    }
+
+    input:focus {
+        min-width: 200px;
+    }
+.form-control input,
+.form-control textarea {
+  border: 1px solid #cf5c5c;
+  font: Arial;
+  resize: horizontal;
+  height: 150%;
+  padding: 1rm;
+  grid-area: 1 / 2;
+  
+  border-radius: 2px;
+  
+}
+
+.form-control input:focus,
+.form-control textarea:focus {
+  outline-color: #00695c;
+  min-width: 200px;
+  border-radius: 2px;
+}
+ 
+       body {
+    text-align: center;
+}
+form {
+      display: block;
+  width: 100%;
+  margin-bottom: 0.25rem;
+    display: inline-block;
+    padding: 10px;
+    
+    transform-box: initial;
+    width: 50%;
+    margin: 25px 50px 25px;
+
+}
+      p {
+        color: red; /* Set text color to red */
+        margin: auto;
+    width: 50%;
+    border: 3px solid green;
+    padding: 10px;
+    display: center;
+      }
+      input {
+        margin: auto;
+    width: 50%;
+    border: 1px solid #0c6a7a;
+    padding: 10px;
+    transform-box: initial;
+    text-align: center;
+    display: center;
+    text-align: center;
+
+      };
+
+      </style>
+      <body>
+<label for="formGroupExampleInput">
+     
+</label>
+<form action="/add-places" method="POST" enctype="multipart/form-data">
+      <div class="center">
+            <labal for = "title"> שם המקום:</labal>
+            <br>
+            <input type="text" name="title" placeholder="שם המקום:">
+            
+      </div>
+      <div>      
+            
+            <labal for = "image"> תמונה</labal>
+            <br>
+          </body>
+            <input type="file" name="image" id="image">
+      </div>
+      <body>
+      <div class="form-control textarea"> 
+            <labal for = "description"> תיאור כללי</labal>     
+            <br>
+            <input type="text" name="description" placeholder="פרטים על המקום">
+            <input type="hidden"  name="placeId">
+      </div>
+      <label for="area">בחר איזור</label>
+<select name="area" id="area">
+
+    <option value="south">דרום</option>
+  
+    <option value="jerusalem">ירושלים</option>
+    <option value="center">מרכז</option>
+    <option value="other">אחר</option>
+
+
+</select>
+    </body>
+      <br>
+      <br>
+      <button class="btn" type="submit">הוסף מקום </button></form>
+
+<br>
+
