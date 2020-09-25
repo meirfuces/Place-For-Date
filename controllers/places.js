@@ -50,7 +50,7 @@ exports.getAddPlace = (req, res, next) => {
             
             res.render('home', {
                   pageTitle: 'all place',
-                  isAuth: req.isLogin,
+                  isAuth: req.session.isLogin,
                   places: places,
                   currentPage: page,
                   hasNextPage: PLACE_FOR_PAGE * page < totalItemsPlace,
@@ -93,7 +93,7 @@ exports.home = (req, res, next) => {
             res.render('home', {
                   pageTitle: 'Home',
                   places: places,
-                  isAuth: req.isLogin,
+                  isAuth: req.session.isLogin,
                   currentPage: page,
                   hasNextPage: PLACE_FOR_PAGE * page < totalItemsPlace,
                   hasPreviousPage: page > 1,
