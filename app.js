@@ -3,11 +3,17 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session');
-
+const MongoDBStroe = require('connect-mongodb-session')(session);
+const  URL_mongoDB= `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.heeag.gcp.mongodb.net/${process.env.MONGO_DEFULT}`;
 
 const app = express();
+const stroe = new MongoDBStroe({
+  uri: URL_mongoDB,
+  collection: 'sessionDB'
+});
 const placeRouter = require('./router/place');
 const authRouter = require('./router/authentication');
+const errorController = require('./controllers/error');
 const User = require('.//models/user');
 const multer = require('multer');
 const helmet = require('helmet');
@@ -28,7 +34,7 @@ app.use(multer({storage:fileStorage}).single('image'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
-  secret: 'the secret', resave: false, saveUninitialized: false
+  secret: 'the secret', resave: false, saveUninitialized: false, store:stroe
 }));
 app.use('/images',express.static(path.join(__dirname, 'images')));
 
@@ -48,15 +54,12 @@ app.use((req, res, next) => {
 app.use(placeRouter);
 app.use(authRouter);
 
-app.use((req, res, next) => {
-  res.status(404).send('<h1>404 error!</h1>');
-});
+app.use(errorController.getEroor);
 
 
 app.use(helmet());
 app.use(compression());
 app.use(morgan('combined'));
-const  URL_mongoDB= `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.heeag.gcp.mongodb.net/${process.env.MONGO_DEFULT}`;
 mongoose.connect(URL_mongoDB,  {useNewUrlParser:true, useCreateIndex: true, useUnifiedTopology: true}).then(
   res=>{
     User.findOne().then(user => {
@@ -70,12 +73,21 @@ mongoose.connect(URL_mongoDB,  {useNewUrlParser:true, useCreateIndex: true, useU
     });
     
     user.save();
-  }
-});
+      }
+    });
 
-app.set('port', (process.env.PORT || 5000));
+    //Here change before Up
+  //   app.listen(3000);
+  // })
+  // .catch(err => {
+  //   console.log(err);
+  // });
+//
 
 //For avoidong Heroku $PORT error
+app.set('port', (process.env.PORT || 5000));
+
+
 app.get('/', function(request, response) {
     var result = 'App is running'
     response.send(result);
