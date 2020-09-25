@@ -1,7 +1,13 @@
 <style>
-
+.main-header__item-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
 </style>
 <link rel="stylesheet" href="/css/main.css">
+<button id="side-menu-toggle">Menu</button>
 <div class="backdrop"></div>
 <header class="main-header">
 <nav class="main-header__nav">
@@ -17,9 +23,20 @@
         <li class="main-header__item">
             <a class="nav-link" href="/add-place">add a place</a>
           </li>
-          <li class="main-header__item">
+
+          <% if (!isAuth) { %>        
+            <li class="main-header__item">
             <a class="nav-link" href="/login">Login</a>
           </li>
+          <% } else { %>
+          <li class="main-header__item">
+            <form action="/logout" method="post">
+                <button type="submit">Logout</button>
+            </form>
+        </li>
+        <% } %>
+
+
       </ul>
  
     </header>
@@ -36,7 +53,24 @@
             <a class="nav-link" href="/add-place">add a place</a>
               </a>
           </li>
-        
+          <% if(!isAuth){ %>            
+            <li class="mobile-nav__item">
+            <a class="nav-link" href="/login">Login</a>
+          </li>
+          <% } else { %>
+            <li class="mobile-nav__item">
+            <form action="/logout" method="post">
+                <button type="submit">Logout</button>
+            </form>
+        </li>
+              <form action="/logout" method="post">
+                
+                  <button type="submit">Logout</button>
+              </form>
+          </li>
+           
+         
+        <% } %>
       </ul>
 </nav>
    
