@@ -17,6 +17,7 @@ const errorController = require('./controllers/error');
 const User = require('.//models/user');
 const multer = require('multer');
 const helmet = require('helmet');
+const flash = require('connect-flash');
 const compression = require('compression');
 const morgan = require('morgan');
 const fileStorage = multer.diskStorage({
@@ -36,6 +37,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
   secret: 'the secret', resave: false, saveUninitialized: false, store:stroe
 }));
+app.use(flash());
 app.use('/images',express.static(path.join(__dirname, 'images')));
 
 

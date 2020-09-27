@@ -1,11 +1,18 @@
 const User = require('../models/user');
 
 const bcrypt = require('bcryptjs');
+
 exports.getLogin = (req, res, next) => {
-  console.log(req.session.isLogin);
+  let message = req.flash('error');
+  if (message.length > 0) {
+    message = message[0];
+  } else {
+    message = null;
+  }
   res.render('login', {
     pageTitle: 'Login',
-    isAuth: false
+    isAuth: false,
+    errorMessage: message
   });
 };
 
@@ -17,19 +24,21 @@ exports.postLogin = (req, res, next) => {
   User.findOne({ email: email })
     .then(user => {
       if (!user) {
+        req.flash('error', 'אימייל זה לא נמצא במערכת, אנא נסה שנית');
         return res.redirect('/login');
       }
       bcrypt
         .compare(password, user.password)
         .then(Match => {
           if (Match) {
-            req.session.isLoggedIn = true;
+            req.session.isLogin = true;
             req.session.user = user;
             return req.session.save(err => {
               console.log(err);
               res.redirect('/');
             });
           }
+          req.flash('error', 'סיסמא לא נכונה, אנא נסה שנית');
           res.redirect('/login');
         })
         .catch(err => {
@@ -41,9 +50,16 @@ exports.postLogin = (req, res, next) => {
 };
 // >> SignUp
 exports.getSignup = (req, res, next) => {
+  let message = req.flash('error');
+  if (message.length > 0) {
+    message = message[0];
+  } else {
+    message = null;
+  }
   res.render('signup', {
-    pageTitle: 'Signup',
-    isAuth: false
+    pageTitle: 'SignUp',
+    isAuth: false,
+    errorMessage: req.flash('error')
   });
 };
 exports.postSignup = (req, res, next) => {
@@ -53,6 +69,7 @@ exports.postSignup = (req, res, next) => {
   User.findOne({ email: email })
     .then(userExsict => {
       if (userExsict) {
+        req.flash('error', 'אימייל קיים במערכת, אנא בחר אחר.');
         return res.redirect('/signup');
       }
       return bcrypt
