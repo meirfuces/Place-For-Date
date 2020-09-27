@@ -8,8 +8,13 @@ const userSchema = new Schema ({
        require:true
  },
  email: {
-       type: String
+       type: String,
+       required: true
  },
+ password: {
+      type: String,
+      required: true
+    },
  cart: {
       places: [ {
             type: Schema.Types.ObjectId, ref: 'Place', require:true
