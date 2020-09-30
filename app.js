@@ -31,6 +31,7 @@ const stroe = new MongoDBStroe({
   uri: URL_mongoDB,
   collection: 'sessionDB'
 });
+const placeAreaRouter = require('./router/placeArea');
 const placeRouter = require('./router/place');
 const authRouter = require('./router/authentication');
 const errorController = require('./controllers/error');
@@ -75,6 +76,7 @@ app.use((req, res, next) => {
 });
 app.use(placeRouter);
 app.use(authRouter);
+app.use(placeAreaRouter);
 
 app.use(errorController.getEroor);
 
