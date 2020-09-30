@@ -1,6 +1,7 @@
 const User = require('../models/user');
 //const sendGridTransporter = require('nodemailer-sendgrid-transport');
 const bcrypt = require('bcryptjs');
+const {validationResult} = require('express-validator/check');
 
 exports.getLogin = (req, res, next) => {
   let message = req.flash('error');
@@ -50,6 +51,7 @@ exports.postLogin = (req, res, next) => {
     .catch(err => console.log(err));
 };
 // >> SignUp
+
 exports.getSignup = (req, res, next) => {
   let message = req.flash('error');
   if (message.length > 0) {
@@ -60,7 +62,14 @@ exports.getSignup = (req, res, next) => {
   res.render('signup', {
     pageTitle: 'SignUp',
     isAuth: false,
-    errorMessage: message
+    errorMessage: message,
+    oldInput: {
+      userName: '',
+      email: '',
+      password: '',
+      confirmPassword: ''
+    },
+    validationErrors: []
   });
 };
 exports.postSignup = (req, res, next) => {
@@ -68,10 +77,26 @@ exports.postSignup = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
 
-  if (password !== req.body.confirmPassword){
-    req.flash('error', 'סיסמא לא מתאימה, אנא הזן שנית');
-    return res.redirect('/login');
+  // if (password !== req.body.confirmPassword){
+  //   req.flash('error', 'סיסמא לא מתאימה, אנא הזן שנית');
+  //   return res.redirect('/signup');
   
+  // }
+  const errors = validationResult(req);
+  if (!errors.isEmpty()){
+
+    return res.status(422).render('signup', {
+      pageTitle: 'SignUp',
+      isAuth: false,
+      errorMessage: errors.array()[0].msg,
+      oldInput: {
+        userName: name,
+        email: email,
+        password: password,
+        confirmPassword: req.body.confirmPassword
+      },
+      validationErrors: errors.array()
+    });
   }
   User.findOne({ email: email })
     .then(userExsict => {

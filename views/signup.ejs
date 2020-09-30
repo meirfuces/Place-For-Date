@@ -19,24 +19,28 @@
             <% } %>
             
             
-        <form class="login-form" action="/signup" method="POST">
+        <form class="login-form" action="/signup" method="POST" novalidate>
             
 
             <div class="form-control">
                 <label for="userName">שם משתמש</label>
-                <input type="text" name="userName" id="userName">
+                <input type="text" name="userName" id="userName" value="<%= oldInput.userName %>">
             </div>
             <div class="form-control">
                 <label for="email">אימייל</label>
-                <input type="email" name="email" id="email">
+                <input
+                class="<%= validationErrors.find(e => e.param === 'email') ? 'invalid' : '' %>" 
+                type="email" name="email" id="email" value="<%= oldInput.email %>">
             </div>
             <div class="form-control">
                 <label for="password">סיסמא</label>
-                <input type="password" name="password" id="password">
+                <input class="<%= validationErrors.find(e => e.param === 'password') ? 'invalid' : '' %>" 
+                type="password" name="password" id="password" value="<%= oldInput.password %>">
             </div>
             <div class="form-control">
                 <label for="confirmPassword">הקש שנית</label>
-                <input type="password" name="confirmPassword" id="confirmPassword">
+                <input class="<%= validationErrors.find(e => e.param === 'confirmPassword') ? 'invalid' : '' %>" 
+                type="password" name="confirmPassword" id="confirmPassword" value="<%= oldInput.confirmPassword %>">
             </div>
             <button class="btn" type="submit">Signup</button>
         </form>
