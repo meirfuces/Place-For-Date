@@ -1,5 +1,5 @@
 const User = require('../models/user');
-
+//const sendGridTransporter = require('nodemailer-sendgrid-transport');
 const bcrypt = require('bcryptjs');
 
 exports.getLogin = (req, res, next) => {
@@ -21,6 +21,7 @@ exports.getLogin = (req, res, next) => {
 exports.postLogin = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
+ 
   User.findOne({ email: email })
     .then(user => {
       if (!user) {
@@ -59,13 +60,19 @@ exports.getSignup = (req, res, next) => {
   res.render('signup', {
     pageTitle: 'SignUp',
     isAuth: false,
-    errorMessage: req.flash('error')
+    errorMessage: message
   });
 };
 exports.postSignup = (req, res, next) => {
+  const name = req.body.userName;
   const email = req.body.email;
   const password = req.body.password;
-  const confirmPassword = req.body.confirmPassword;
+
+  if (password !== req.body.confirmPassword){
+    req.flash('error', 'סיסמא לא מתאימה, אנא הזן שנית');
+    return res.redirect('/login');
+  
+  }
   User.findOne({ email: email })
     .then(userExsict => {
       if (userExsict) {
@@ -76,6 +83,7 @@ exports.postSignup = (req, res, next) => {
         .hash(password, 12)
         .then(hashedPassword => {
           const user = new User({
+            name: name,
             email: email,
             password: hashedPassword,
             cart: { places: [] }

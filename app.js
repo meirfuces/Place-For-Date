@@ -1,4 +1,24 @@
+// const meirPhone = '+972544468689' ;
+// const ArielPhone = '+972546759747';
+// const BenPhone = '+972508807565';
+
+// const accountSid = 'ACcb2ac844b57204f67a5845a954ce614c'; 
+// const authToken = 'c501f5c3d2eac23220192c39e2e2f76d'; 
+// const client = require('twilio')(accountSid, authToken); 
+ 
+// client.messages 
+//       .create({ 
+//          body: 'הפיגוע רק התחיל, אור שחר היקרה. מבצע בשמת מתחיל שנית', 
+//          from: '+12018174673',       
+//          to: BenPhone 
+//        }) 
+//       .then(message => console.log(message.sid)) 
+//       .done();
+
+
 const express = require('express');
+
+
 const bodyParser = require('body-parser');
 const path = require('path');
 const mongoose = require('mongoose');
